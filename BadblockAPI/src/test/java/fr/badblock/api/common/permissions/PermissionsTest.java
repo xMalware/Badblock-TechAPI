@@ -1,6 +1,7 @@
 package fr.badblock.api.common.permissions;
 
-import fr.badblock.api.common.permissions.Permission.PermissionResult;
+import fr.badblock.api.common.utils.permissions.Permission;
+import fr.badblock.api.common.utils.permissions.Permission.PermissionResult;
 import junit.framework.TestCase;
 
 /**
@@ -17,8 +18,8 @@ public class PermissionsTest extends TestCase
 		Permission perm5 = new Permission("-*");
 
 		assertEquals(PermissionResult.YES, perm1.compare(perm2));
-		assertEquals(PermissionResult.UNKNOW, perm1.compare(perm3));
-		assertEquals(PermissionResult.UNKNOW, perm2.compare(perm3));
+		assertEquals(PermissionResult.UNKNOWN, perm1.compare(perm3));
+		assertEquals(PermissionResult.UNKNOWN, perm2.compare(perm3));
 		assertEquals(PermissionResult.NO, perm1.compare(perm4));
 		assertEquals(PermissionResult.NO, perm2.compare(perm4));
 		assertEquals(PermissionResult.NO, perm5.compare(perm1));

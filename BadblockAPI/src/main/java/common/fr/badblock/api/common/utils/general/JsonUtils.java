@@ -19,6 +19,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import fr.badblock.api.common.utils.GsonUtils;
+
 public class JsonUtils {
 	
 	public static <T> T convert(JsonElement element, Class<T> clazz) {

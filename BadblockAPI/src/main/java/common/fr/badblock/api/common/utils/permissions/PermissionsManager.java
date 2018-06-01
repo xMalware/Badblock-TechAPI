@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 
-import fr.badblock.api.common.utils.general.GsonUtils;
+import fr.badblock.api.common.utils.GsonUtils;
 import fr.badblock.api.common.utils.i18n.I18n;
 import lombok.Getter;
 

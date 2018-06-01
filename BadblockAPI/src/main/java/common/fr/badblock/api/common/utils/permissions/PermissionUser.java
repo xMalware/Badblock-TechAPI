@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-import fr.badblock.api.common.utils.general.GsonUtils;
+import fr.badblock.api.common.utils.GsonUtils;
 import fr.badblock.api.common.utils.permissions.Permission.PermissionResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
