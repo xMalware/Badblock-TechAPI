@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import fr.badblock.api.common.utils.logs.ChatColor;
 import lombok.Getter;
 import lombok.Setter;
 

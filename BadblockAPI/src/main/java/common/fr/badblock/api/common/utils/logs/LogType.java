@@ -6,14 +6,15 @@ import lombok.Getter;
 public enum LogType 
 {
 
-	SUCCESS	(ChatColor.GREEN),
-	ERROR	(ChatColor.RED),
-	WARNING	(ChatColor.YELLOW),
-	DEBUG	(ChatColor.DARK_PURPLE);
+	SUCCESS	(LogChatColor.GREEN),
+	INFO	(LogChatColor.CYAN),
+	ERROR	(LogChatColor.RED),
+	WARNING	(LogChatColor.YELLOW),
+	DEBUG	(LogChatColor.PURPLE);
 
-	private ChatColor chatColor;
+	private String chatColor;
 
-	LogType(ChatColor chatColor) 
+	LogType(String chatColor) 
 	{
 		this.chatColor = chatColor;
 	}

@@ -18,13 +18,13 @@ public class Log
 	public static String log(LogType logType, String message) 
 	{
 		String date = simpleDateFormat.format(new Date());
-		String result = date + " " + logType.getChatColor() + "[" + logType.name() + "] " + ChatColor.RESET + message;
-		System.out.println(message);
+		String result = date + " " + logType.getChatColor() + "[" + logType.name() + "] " + LogChatColor.RESET + message;
+		System.out.println(result);
 		if (logAction != null)
 		{
 			logAction.done(result);
 		}
-		return message;
+		return result;
 	}
 
 }

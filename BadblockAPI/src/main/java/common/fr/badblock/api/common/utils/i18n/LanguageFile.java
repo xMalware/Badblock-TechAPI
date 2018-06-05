@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import fr.badblock.api.common.utils.general.JsonUtils;
-import fr.badblock.api.common.utils.logs.ChatColor;
+import fr.badblock.api.common.utils.logs.LogChatColor;
 
 public class LanguageFile
 {
@@ -29,7 +29,7 @@ public class LanguageFile
 			if(entry.getValue().isJsonObject())
 			{
 				content.put(entry.getKey().toLowerCase(), JsonUtils.convert(entry.getValue(), Message.class));
-				content.get(entry.getKey().toLowerCase()).verify(ChatColor.RED + entry.getKey());
+				content.get(entry.getKey().toLowerCase()).verify(LogChatColor.RED + entry.getKey());
 			}
 		}
 	}
