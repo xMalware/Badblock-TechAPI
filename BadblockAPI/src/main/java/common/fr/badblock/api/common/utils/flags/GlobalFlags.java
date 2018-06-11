@@ -1,23 +1,19 @@
-package fr.badblock.api.common.utils.general;
+package fr.badblock.api.common.utils.flags;
 
 import java.util.HashMap;
 
 /**
  * GlobalFlags class
- * It's very useful to all projets (plugins/apps) to set a flag time to an object.
+ * It's very useful to all projects (plugins/apps) to set a flag time to an object.
  * For example, to prevent spamming, you can flag the main character object with a time
  * 
  * @author Aurelian Motiz
  */
-public class GlobalFlags {
+public class GlobalFlags
+{
 
 	// Map where all objects are stored
 	private static HashMap<Object, Long> map = new HashMap<>();
-	
-	public static void main(String[] args)
-	{
-		set(null, 1000);
-	}
 	
 	/**
 	 * Set a flag object with added time.
