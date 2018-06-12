@@ -1,34 +1,41 @@
 package fr.badblock.api.common.utils.bungee;
 
+import java.util.UUID;
+
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
+import fr.badblock.api.common.utils.TimeUtils;
 import fr.badblock.api.common.utils.i18n.I18n;
 import fr.badblock.api.common.utils.i18n.Locale;
 import fr.badblock.api.common.utils.time.Time;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = false)
-@Data
+@ToString
 public class Punished
 {
 
-	private boolean ban,
-	mute;
+	private boolean ban, mute;
 
-	private long	banEnd,
-	muteEnd;
+	@Getter @Setter
+	private long	banEnd, muteEnd;
 
-	private String	banReason,
-	muteReason;
+	@Getter @Setter
+	private String	banReason, muteReason;
 
-	private String	banner,
-	muter;
+	@Getter @Setter
+	private String	banner, muter;
 
-	private int		banId;
-	private int		muteId;
+	@Getter @Setter
+	private UUID	banId;
+	
+	@Getter @Setter
+	private UUID	muteId;
 
 	public Punished()
 	{
@@ -79,11 +86,11 @@ public class Punished
 		}
 		if (jsonObject.has("banId")&& !jsonObject.get("banId").isJsonNull())
 		{
-			banId = jsonObject.get("banId").getAsInt();
+			banId = UUID.fromString(jsonObject.get("banId").getAsString());
 		}
 		if (jsonObject.has("muteId")&& !jsonObject.get("muteId").isJsonNull())
 		{
-			muteId = jsonObject.get("muteId").getAsInt();
+			muteId = UUID.fromString(jsonObject.get("muteId").getAsString());
 		}
 	}
 
@@ -122,6 +129,16 @@ public class Punished
 		}
 	}
 
+	public boolean isBan()
+	{
+		return ban && banEnd > TimeUtils.time();
+	}
+	
+	public boolean isMute()
+	{
+		return mute && muteEnd > TimeUtils.time();
+	}
+	
 	public String buildBanTime(Locale locale)
 	{
 		if(banEnd != -1){
