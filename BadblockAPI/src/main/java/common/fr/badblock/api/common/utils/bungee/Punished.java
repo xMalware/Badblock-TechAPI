@@ -49,7 +49,8 @@ public class Punished
 	
 	public boolean isBan()
 	{
-		return ban != null && ban.getType().equals(PunishType.BAN) && ban.getExpire() > TimeUtils.time();
+		return ban != null && ban.getType().equals(PunishType.BAN) &&
+				(ban.getExpire() == -1 || ban.getExpire() > TimeUtils.time());
 	}
 	
 	public boolean isMute()
