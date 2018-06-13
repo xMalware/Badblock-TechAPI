@@ -17,10 +17,21 @@ public enum BungeePacketType {
 	 * Broadcast packet
 	 */
 	BROADCAST(),
+	
 	/**
 	 * Logging packet
 	 */
-	LOG();
+	LOG(),
+	
+	/**
+	 * Add server
+	 */
+	ADD_SERVER(),
+	
+	/**
+	 * Remove server
+	 */
+	REMOVE_SERVER();
 
 	/**
 	 * Custom packet processing
