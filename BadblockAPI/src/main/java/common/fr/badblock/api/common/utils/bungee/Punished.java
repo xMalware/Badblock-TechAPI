@@ -28,7 +28,6 @@ public class Punished
 
 	public Punished(JsonObject jsonObject)
 	{
-		System.out.println(jsonObject.toString());
 		if (jsonObject.has("ban") && !jsonObject.get("ban").isJsonNull())
 		{
 			ban = new Punishment(jsonObject.get("ban").getAsJsonObject());
