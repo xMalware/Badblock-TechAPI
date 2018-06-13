@@ -11,7 +11,7 @@ public enum Time {
 	HOUR(MINUTE.getNano() * 60L, "h", "heure"),
 	DAY(HOUR.getNano() * 24L, "d", "jour"),
 	MONTH(DAY.getNano() * 30L, "mo", "mois"),
-	YEAR(DAY.getNano() * 365L, "y", "ann�e");
+	YEAR(DAY.getNano() * 365L, "y", "année");
 	
 	private static Time[] inOrder = new Time[]{NANO_SECOND, MICRO_SECOND, MILLIS_SECOND, SECOND, MINUTE, HOUR, DAY, MONTH, YEAR};
 	
