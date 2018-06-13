@@ -1,4 +1,4 @@
-package fr.badblock.api.common.nodesync;
+package fr.badblock.api.common.sync.node;
 
 import fr.badblock.api.common.utils.TimeUtils;
 
