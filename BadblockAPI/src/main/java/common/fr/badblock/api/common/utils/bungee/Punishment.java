@@ -12,7 +12,7 @@ import lombok.Data;
 public class Punishment {
 
 	private String		uuid;
-	private String		punished;
+	private String		punishedUuid;
 	private String		punishedIp;
 	private PunishType	type;
 	private long		timestamp;
@@ -27,7 +27,7 @@ public class Punishment {
 	public Punishment(JsonObject jsonObject)
 	{
 		uuid = jsonObject.get("uuid").getAsString();
-		punished = jsonObject.get("punished").getAsString();
+		punishedUuid = jsonObject.get("punishedUuid").getAsString();
 		punishedIp = jsonObject.get("punishedIp").getAsString();
 		type = PunishType.getFromString(jsonObject.get("type").getAsString());
 		timestamp = jsonObject.get("timestamp").getAsLong();
@@ -52,7 +52,7 @@ public class Punishment {
 		DBObject dbObject = new BasicDBObject();
 
 		dbObject.put("uuid", getUuid());
-		dbObject.put("punished", getPunished());
+		dbObject.put("punished", getPunishedUuid());
 		dbObject.put("punishedIp", getPunishedIp());
 		dbObject.put("type", getType().name());
 		dbObject.put("timestamp", getTimestamp());
@@ -61,7 +61,7 @@ public class Punishment {
 		dbObject.put("reason", getReason());
 		dbObject.put("isReasonKey", isReasonKey());
 		dbObject.put("proof", getProof());
-		dbObject.put("punisher", getPunished());
+		dbObject.put("punisher", getPunisher());
 		dbObject.put("punisherIp", getPunisherIp());
 
 		return dbObject;
