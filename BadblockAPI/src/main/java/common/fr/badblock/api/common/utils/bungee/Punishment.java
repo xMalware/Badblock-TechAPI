@@ -1,15 +1,22 @@
 package fr.badblock.api.common.utils.bungee;
 
+import java.lang.reflect.Type;
+
+import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
+import fr.badblock.api.common.utils.GsonUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @AllArgsConstructor
 @Data
 public class Punishment {
+	
+	@SuppressWarnings("serial")
+	private static Type t = new TypeToken<String[]>() {}.getType();
 
 	private String		uuid;
 	private String		punishedUuid;
@@ -45,6 +52,22 @@ public class Punishment {
 		}
 		punisher = jsonObject.get("punisher").getAsString();
 		punisherIp = jsonObject.get("punisherIp").getAsString();
+	}
+
+	public Punishment(DBObject dbObject)
+	{
+		uuid = dbObject.get("uuid").toString();
+		punishedUuid = dbObject.get("punishedUuid").toString();
+		punishedIp = dbObject.get("punishedIp").toString();
+		type = PunishType.getFromString(dbObject.get("type").toString());
+		timestamp = Long.parseLong(dbObject.get("timestamp").toString());
+		expire = Long.parseLong(dbObject.get("expire").toString());
+		date = dbObject.get("date").toString();
+		reason = dbObject.get("reason").toString();
+		isReasonKey = Boolean.parseBoolean(dbObject.get("isReasonKey").toString());
+		proof = GsonUtils.getGson().fromJson(dbObject.get("proof").toString(), t);
+		punisher = dbObject.get("punisher").toString();
+		punisherIp = dbObject.get("punisherIp").toString();
 	}
 
 	public DBObject toObject()
