@@ -22,6 +22,8 @@ public class Punished
 
 	private Punishment	mute;
 
+	private Punishment	warn;
+
 	public Punished()
 	{
 	}
@@ -37,6 +39,11 @@ public class Punished
 		{
 			mute = new Punishment(jsonObject.get("mute").getAsJsonObject());
 		}
+		
+		if (jsonObject.has("warn") && !jsonObject.get("warn").isJsonNull())
+		{
+			warn = new Punishment(jsonObject.get("warn").getAsJsonObject());
+		}
 	}
 
 	public DBObject getDBObject()
@@ -44,6 +51,7 @@ public class Punished
 		BasicDBObject query = new BasicDBObject();
 		query.put("ban", ban != null ? ban.toObject() : null);
 		query.put("mute", mute != null ? ban.toObject() : null);
+		query.put("warn", warn != null ? warn.toObject() : null);
 		return query;
 	}
 	
