@@ -7,8 +7,12 @@ public enum PunishType {
 	UNBAN,
 
 	MUTE,
+	
+	UNMUTE,
 
-	WARN;
+	WARN,
+	
+	KICK;
 	
 	public static PunishType getFromString(String string)
 	{

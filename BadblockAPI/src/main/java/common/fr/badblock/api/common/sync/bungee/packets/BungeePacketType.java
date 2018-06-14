@@ -31,7 +31,12 @@ public enum BungeePacketType {
 	/**
 	 * Remove server
 	 */
-	REMOVE_SERVER();
+	REMOVE_SERVER(),
+	
+	/**
+	 * Force kick
+	 */
+	FORCE_KICK;
 
 	/**
 	 * Custom packet processing
