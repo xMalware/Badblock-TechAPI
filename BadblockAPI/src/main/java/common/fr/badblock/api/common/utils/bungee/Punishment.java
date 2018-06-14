@@ -29,6 +29,7 @@ public class Punishment {
 	private boolean		isReasonKey;
 	private String[]	proof;
 	private String		punisher;
+	private String		punisherUuid;
 	private String		punisherIp;
 
 	public Punishment(JsonObject jsonObject)
@@ -51,6 +52,7 @@ public class Punishment {
 			}
 		}
 		punisher = jsonObject.get("punisher").getAsString();
+		punisherUuid = jsonObject.get("punisherUuid").getAsString();
 		punisherIp = jsonObject.get("punisherIp").getAsString();
 	}
 
@@ -67,6 +69,7 @@ public class Punishment {
 		isReasonKey = Boolean.parseBoolean(dbObject.get("isReasonKey").toString());
 		proof = GsonUtils.getGson().fromJson(dbObject.get("proof").toString(), t);
 		punisher = dbObject.get("punisher").toString();
+		punisherUuid = dbObject.get("punisherUuid").toString();
 		punisherIp = dbObject.get("punisherIp").toString();
 	}
 
@@ -75,7 +78,7 @@ public class Punishment {
 		DBObject dbObject = new BasicDBObject();
 
 		dbObject.put("uuid", getUuid());
-		dbObject.put("punished", getPunishedUuid());
+		dbObject.put("punishedUuid", getPunishedUuid());
 		dbObject.put("punishedIp", getPunishedIp());
 		dbObject.put("type", getType().name());
 		dbObject.put("timestamp", getTimestamp());
@@ -85,6 +88,7 @@ public class Punishment {
 		dbObject.put("isReasonKey", isReasonKey());
 		dbObject.put("proof", getProof());
 		dbObject.put("punisher", getPunisher());
+		dbObject.put("punisherUuid", getPunisherUuid());
 		dbObject.put("punisherIp", getPunisherIp());
 
 		return dbObject;
