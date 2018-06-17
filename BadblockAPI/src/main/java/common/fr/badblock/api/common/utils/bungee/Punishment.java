@@ -8,13 +8,17 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 import fr.badblock.api.common.utils.GsonUtils;
+import fr.badblock.api.common.utils.TimeUtils;
+import fr.badblock.api.common.utils.i18n.I18n;
+import fr.badblock.api.common.utils.i18n.Locale;
+import fr.badblock.api.common.utils.time.Time;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @AllArgsConstructor
 @Data
 public class Punishment {
-	
+
 	@SuppressWarnings("serial")
 	private static Type t = new TypeToken<String[]>() {}.getType();
 
@@ -92,6 +96,24 @@ public class Punishment {
 		dbObject.put("punisherIp", getPunisherIp());
 
 		return dbObject;
+	}
+
+	/**
+	 * Build time
+	 * TODO LOCALE
+	 * @param senderLocale
+	 * @return
+	 */
+	public Object buildTime(Locale senderLocale)
+	{
+		if (getExpire() != -1)
+		{
+			return Time.MILLIS_SECOND.toFrench(getExpire() - TimeUtils.time(), Time.MINUTE, Time.YEAR);
+		}
+		else
+		{
+			return I18n.getInstance().get(senderLocale, "punishments.forever")[0];
+		}
 	}
 
 }
