@@ -50,7 +50,7 @@ public class Punished
 	{
 		BasicDBObject query = new BasicDBObject();
 		query.put("ban", ban != null ? ban.toObject() : null);
-		query.put("mute", mute != null ? ban.toObject() : null);
+		query.put("mute", mute != null ? mute.toObject() : null);
 		query.put("warn", warn != null ? warn.toObject() : null);
 		return query;
 	}
