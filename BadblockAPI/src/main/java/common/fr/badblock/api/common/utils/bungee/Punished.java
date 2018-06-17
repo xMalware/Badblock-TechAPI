@@ -63,7 +63,7 @@ public class Punished
 	
 	public boolean isMute()
 	{
-		return mute != null && mute.getType().equals(PunishType.BAN) && mute.getExpire() > TimeUtils.time();
+		return mute != null && mute.getType().equals(PunishType.MUTE) && mute.getExpire() > TimeUtils.time();
 	}
 	
 	public String buildBanTime(Locale locale)
