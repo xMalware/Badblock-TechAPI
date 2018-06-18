@@ -36,7 +36,12 @@ public enum BungeePacketType {
 	/**
 	 * Force kick
 	 */
-	FORCE_KICK;
+	FORCE_KICK(),
+	
+	/**
+	 * Server broadcast
+	 */
+	SERVER_BROADCAST();
 
 	/**
 	 * Custom packet processing
