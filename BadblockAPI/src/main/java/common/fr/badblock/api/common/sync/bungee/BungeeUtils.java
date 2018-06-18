@@ -56,7 +56,7 @@ public class BungeeUtils
 		// Create a rabbit packet message
 		RabbitPacketMessage rabbitPacketMessage = new RabbitPacketMessage(5000, json);
 		// Create a rabbit packet
-		RabbitPacket rabbitPacket = new RabbitPacket(rabbitPacketMessage, BadBungeeQueues.BUNGEE_PROCESSING, true, 
+		RabbitPacket rabbitPacket = new RabbitPacket(rabbitPacketMessage, BadBungeeQueues.BUNGEE_PROCESSING, false, 
 				RabbitPacketEncoder.UTF8, RabbitPacketType.PUBLISHER);
 		// Send the rabbit packet
 		rabbitService.sendPacket(rabbitPacket);
