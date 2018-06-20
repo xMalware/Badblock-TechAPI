@@ -1,4 +1,4 @@
-package fr.badblock.api;
+package fr.badblock.api.bukkit;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
