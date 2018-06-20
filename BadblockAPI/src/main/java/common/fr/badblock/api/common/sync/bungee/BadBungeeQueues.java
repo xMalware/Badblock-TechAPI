@@ -17,7 +17,10 @@ public class BadBungeeQueues {
 	public static final String BUNGEE_DATA = "bungee.inter.data";
 	
 	// BUNGEE PUNISHMENT
-	public static final String BUNGEE_PUNISHMENT = "bungee.punishment";
+	public static final String BUNGEE_PUNISHMENT = "bungee.punishment";	
+	
+	// BUNGEE STATE
+	public static final String BUNGEE_STATE = "bungee.state";
 
 	// RECEIVERS DATA
 	public static final String BUNGEE_DATA_RECEIVERS_UPDATE = "bungee.data.receivers.update";
