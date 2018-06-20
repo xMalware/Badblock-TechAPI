@@ -15,11 +15,13 @@ import fr.badblock.api.common.utils.GsonUtils;
 import fr.badblock.api.common.utils.i18n.I18n;
 import fr.badblock.api.common.utils.i18n.Locale;
 import fr.badblock.api.common.utils.permissions.Permission.PermissionResult;
+import lombok.ToString;
 
 /**
  * Permissible
  * @author LeLanN
  */
+@ToString
 public class Permissible
 {
 
