@@ -25,8 +25,8 @@ public class BadBungeeQueues {
 	// RECEIVERS DATA
 	public static final String BUNGEE_DATA_RECEIVERS_UPDATE = "bungee.data.receivers.update";
 
-	// SEND DATA
-	public static final String BUNGEE_DATA_SENDERS = "bungee.data.senders.";
+	// Bungee Player Data RPC
+	public static final String BUNGEE_DATA_PLAYERS_RPC = "bungee.data.player.rpc";
 
 	// PROCESSING
 	public static final String PLAYER_PROCESSING = "bungee.processing.players.linkQueue";
