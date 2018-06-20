@@ -49,23 +49,19 @@ public class RabbitThread extends TechThread<RabbitPacket>
 			return;
 		}
 		String message = rabbitPacket.getRabbitPacketMessage().toJson();
-		System.out.println(message + " / " + rabbitPacket.getType());
 		switch (rabbitPacket.getType())
 		{
 		case MESSAGE_BROKER:
-			System.out.println("A");
 			channel.queueDeclare(rabbitPacket.getQueue(), false, false, false, null);
 			channel.basicPublish("", rabbitPacket.getQueue(), null, message.getBytes(rabbitPacket.getEncoder().getName()));
 			debugPacket(rabbitPacket);
 			break;
 		case PUBLISHER:
-			System.out.println("B");
 			channel.exchangeDeclare(rabbitPacket.getQueue(), "fanout");
 			channel.basicPublish(rabbitPacket.getQueue(), "", null, message.getBytes(rabbitPacket.getEncoder().getName()));
 			debugPacket(rabbitPacket);
 			break;
 		case REMOTE_PROCEDURE_CALL:
-			System.out.println("C");
 			if (rabbitPacket.getCallback() == null)
 			{
 				break;
