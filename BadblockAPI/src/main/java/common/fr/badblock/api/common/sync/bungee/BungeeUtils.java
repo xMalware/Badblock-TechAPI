@@ -3,6 +3,7 @@ package fr.badblock.api.common.sync.bungee;
 import fr.badblock.api.common.sync.bungee.objects.ServerObject;
 import fr.badblock.api.common.sync.bungee.packets.BungeePacket;
 import fr.badblock.api.common.sync.bungee.packets.BungeePacketType;
+import fr.badblock.api.common.sync.bungee.states.BungeeStatePacket;
 import fr.badblock.api.common.tech.rabbitmq.RabbitService;
 import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacket;
 import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacketEncoder;
@@ -32,7 +33,7 @@ public class BungeeUtils
 		// Send a bungee packet
 		sendBungeePacket(rabbitService, new BungeePacket(BungeePacketType.ADD_SERVER, message));
 	}
-	
+
 	/**
 	 * Remove a server
 	 * @param rabbitService
@@ -43,7 +44,7 @@ public class BungeeUtils
 		// Send a bungee packet
 		sendBungeePacket(rabbitService, new BungeePacket(BungeePacketType.REMOVE_SERVER, serverName));
 	}
-	
+
 	/**
 	 * Send a bungee packet
 	 * @param rabbitService
@@ -61,5 +62,23 @@ public class BungeeUtils
 		// Send the rabbit packet
 		rabbitService.sendPacket(rabbitPacket);
 	}
-	
+
+	/**
+	 * Send a bungee state
+	 * @param rabbitService
+	 * @param packet
+	 */
+	public static void sendBungeeState(RabbitService rabbitService, BungeeStatePacket packet)
+	{
+		// To json
+		String json = GsonUtils.getGson().toJson(packet);
+		// Create a rabbit packet message
+		RabbitPacketMessage rabbitPacketMessage = new RabbitPacketMessage(5000, json);
+		// Create a rabbit packet
+		RabbitPacket rabbitPacket = new RabbitPacket(rabbitPacketMessage, BadBungeeQueues.BUNGEE_STATE, false, 
+				RabbitPacketEncoder.UTF8, RabbitPacketType.PUBLISHER);
+		// Send the rabbit packet
+		rabbitService.sendPacket(rabbitPacket);
+	}
+
 }
