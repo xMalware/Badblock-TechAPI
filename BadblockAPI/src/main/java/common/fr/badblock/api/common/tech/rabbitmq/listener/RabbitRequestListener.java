@@ -65,7 +65,7 @@ public abstract class RabbitRequestListener
 								Log.log(LogType.DEBUG, "[RabbitConnector] Received packet from " + getName() + ": " + rabbitMessage.getMessage());
 							}
 							
-							response = reply(response);
+							response = reply(rabbitMessage.getMessage());
 
 							channel.basicPublish("", properties.getReplyTo(), replyProps, response.getBytes("UTF-8"));
 							channel.basicAck(envelope.getDeliveryTag(), false);
