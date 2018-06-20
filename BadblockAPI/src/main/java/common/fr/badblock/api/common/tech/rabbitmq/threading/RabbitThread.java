@@ -14,7 +14,6 @@ import fr.badblock.api.common.tech.TechThread;
 import fr.badblock.api.common.tech.rabbitmq.RabbitService;
 import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacket;
 import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacketManager;
-import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacketType;
 import fr.badblock.api.common.utils.logs.Log;
 import fr.badblock.api.common.utils.logs.LogType;
 import lombok.EqualsAndHashCode;
@@ -81,15 +80,10 @@ public class RabbitThread extends TechThread<RabbitPacket>
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 					if (properties.getCorrelationId().equals(corrId)) {
 						response.offer(new String(body, "UTF-8"));
-						try {
-							String message = response.take();
-							rabbitPacket.getCallback().done(message, null);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
 					}
 				}
 			});
+			rabbitPacket.getCallback().done(response.take(), null);
 
 			debugPacket(rabbitPacket);
 			break;
