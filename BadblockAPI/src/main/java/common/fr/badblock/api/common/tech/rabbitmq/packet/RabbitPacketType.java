@@ -4,6 +4,7 @@ public enum RabbitPacketType
 {
 
 	MESSAGE_BROKER,
-	PUBLISHER;
+	PUBLISHER,
+	REMOTE_PROCEDURE_CALL;
 	
 }

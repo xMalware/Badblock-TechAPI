@@ -9,6 +9,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 import fr.badblock.api.common.tech.AutoReconnector;
 import fr.badblock.api.common.tech.rabbitmq.listener.RabbitListener;
+import fr.badblock.api.common.tech.rabbitmq.listener.RabbitRequestListener;
 import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacket;
 import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacketManager;
 import fr.badblock.api.common.tech.rabbitmq.setting.RabbitSettings;
@@ -30,7 +31,8 @@ public class RabbitService extends AutoReconnector
 	private RabbitSettings			settings;
 	private boolean					dead;
 
-	private List<RabbitListener>	listeners = new ArrayList<>();
+	private List<RabbitListener>		listeners = new ArrayList<>();
+	private List<RabbitRequestListener>	requests = new ArrayList<>();
 
 	public RabbitService(String name, RabbitSettings settings)
 	{
@@ -46,11 +48,18 @@ public class RabbitService extends AutoReconnector
 		return this;
 	}
 
+	public RabbitService addRequestListener(RabbitRequestListener listener)
+	{
+		listener.load();
+		requests.add(listener);
+		return this;
+	}
+
 	public void sendPacket(RabbitPacket rabbitPacket)
 	{
 		getPacketManager().sendPacket(rabbitPacket);
 	}
-
+	
 	@Override
 	public void remove()
 	{
@@ -123,6 +132,8 @@ public class RabbitService extends AutoReconnector
 				setChannel(getConnection().createChannel());
 			// Reload listeners
 			listeners.stream().forEach(listener -> listener.load());
+			// Reload request listeners
+			requests.stream().forEach(request -> request.load());
 			Log.log(LogType.SUCCESS, "[RabbitConnector] Successfully reconnected to RabbitMQ service (" + (System.currentTimeMillis() - time) + " ms).");
 		}
 		catch(Exception error) 
