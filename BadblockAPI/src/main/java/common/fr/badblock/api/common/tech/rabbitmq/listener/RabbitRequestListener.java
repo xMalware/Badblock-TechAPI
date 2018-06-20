@@ -35,7 +35,7 @@ public abstract class RabbitRequestListener
 				return;
 			}
 
-			Channel channel = getRabbitService().getChannel();
+			Channel channel = getRabbitService().getConnection().createChannel();
 
 			channel.queueDeclare(name, false, false, false, null);
 
