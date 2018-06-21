@@ -32,7 +32,7 @@ public abstract class RabbitRequestListener
 		new Thread("RabbitMQ/RequestListener/" + name + "/" + UUID.randomUUID().toString())
 		{
 			@Override
-			public void start()
+			public void run()
 			{
 				Channel channel = null;
 				try
@@ -62,17 +62,19 @@ public abstract class RabbitRequestListener
 									.correlationId(properties.getCorrelationId())
 									.build();
 
-							String response = new String(body,"UTF-8");
-
-							if (getRabbitService().isDead()) 
-							{
-								return;
-							}
-							System.out.println("Request listener : E - HANDLE DELIVERY");
+							String response = null;
+							
 							try
 							{
-								System.out.println("Request listener : F - HANDLE DELIVERY");
-								RabbitPacketMessage rabbitMessage = RabbitPacketMessage.fromJson(response);
+								String r2 = new String(body,"UTF-8");
+
+								if (getRabbitService().isDead()) 
+								{
+									return;
+								}
+								System.out.println("Request listener : E - HANDLE DELIVERY");
+								System.out.println("Request listener : F - HANDLE DELIVERY: " + r2);
+								RabbitPacketMessage rabbitMessage = RabbitPacketMessage.fromJson(r2);
 								if (rabbitMessage.isAlive()) 
 								{
 									System.out.println("Request listener : G - HANDLE DELIVERY");
@@ -82,11 +84,13 @@ public abstract class RabbitRequestListener
 										Log.log(LogType.DEBUG, "[RabbitConnector] Received packet from " + getName() + ": " + rabbitMessage.getMessage());
 									}
 
-									System.out.println("Request listener : I - HANDLE DELIVERY");
-									response = reply(rabbitMessage.getMessage());
+									System.out.println("Request listener : I - HANDLE DELIVERY 1");
+									String msg = rabbitMessage.getMessage();
+									System.out.println("Request listener : I - HANDLE DELIVERY 2 s"); 
+									response = RabbitRequestListener.this.reply(msg);
+									System.out.println("Request listener : Reply: " + response);
 
-									finalChannel.basicPublish("", properties.getReplyTo(), replyProps, response.getBytes("UTF-8"));
-									finalChannel.basicAck(envelope.getDeliveryTag(), false);
+									System.out.println("Request listener : I - HANDLE DELIVERY 3"); 
 								}
 								else if (isDebug())
 								{
@@ -97,26 +101,31 @@ public abstract class RabbitRequestListener
 							}
 							catch(Exception error)
 							{
+								System.out.println("Request listener : ERR-1");
 								Log.log(LogType.ERROR, "[RabbitConnector] Error during the handle delivery.");
 								error.printStackTrace();
 							}
 							finally {
-								System.out.println("Request listener : J2 - HANDLE DELIVERY");
+								System.out.println("Request listener : FINALLY");
 								finalChannel.basicPublish( "", properties.getReplyTo(), replyProps, response.getBytes("UTF-8"));
 								finalChannel.basicAck(envelope.getDeliveryTag(), false);
-								// RabbitMq consumer worker thread notifies the RPC server owner thread 
-								synchronized(this) {
-									this.notify();
-								}
+					            // RabbitMq consumer worker thread notifies the RPC server owner thread 
+					            synchronized(this) {
+					            	this.notify();
+					            }
 							}
 							System.out.println("Request listener : K - HANDLE DELIVERY");
 
+							// RabbitMq consumer worker thread notifies the RPC server owner thread 
+							synchronized(this) {
+								this.notify();
+							}
 
 						}
 					};
 					System.out.println("Request listener : L - HANDLE DELIVERY");
 
-					channel.basicConsume(name, true, consumer);
+					channel.basicConsume(name, false, consumer);
 					System.out.println("Request listener : M - HANDLE DELIVERY");
 					while (true) {
 						System.out.println("Request listener : N - HANDLE DELIVERY");
@@ -129,10 +138,12 @@ public abstract class RabbitRequestListener
 						}
 					}
 				} catch (Exception e) {
+					System.out.println("Request listener : ERR-0");
 					Log.log(LogType.ERROR, "[RabbitConnector] Error during a request listener bind.");
 					e.printStackTrace();
 				}
 				finally {
+					System.out.println("Request listener : CLOSE");
 					if (channel != null)
 						try {
 							channel.close();
@@ -142,6 +153,9 @@ public abstract class RabbitRequestListener
 		}.start();
 	}
 
-	public abstract String reply(String body);
+	public String reply(String body)
+	{
+		return body;
+	}
 
 }

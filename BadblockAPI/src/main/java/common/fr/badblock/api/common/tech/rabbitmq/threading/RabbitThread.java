@@ -75,15 +75,19 @@ public class RabbitThread extends TechThread<RabbitPacket>
 
 			final BlockingQueue<String> response = new ArrayBlockingQueue<String>(1);
 
+			System.out.println("O");
 			channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+					System.out.println("Response: " + properties.getCorrelationId() + " / " + corrId);
 					if (properties.getCorrelationId().equals(corrId)) {
 						response.offer(new String(body, "UTF-8"));
 					}
 				}
 			});
+			System.out.println("K!");
 			rabbitPacket.getCallback().done(response.take(), null);
+			System.out.println("!! :P");
 
 			debugPacket(rabbitPacket);
 			break;

@@ -12,6 +12,7 @@ public class BadBungeeQueues {
 	// BUNGEE TOKENS
 	public static final String BUNGEE_TOKEN_QUERY = "bungee.tokens.query";
 	public static final String BUNGEE_TOKEN_RESULT = "bungee.tokens.result";
+	public static final String BUNGEE_TOKEN_RESULT_GAME = "bungee.tokens.resultgame";
 
 	// BUNGEE DATA
 	public static final String BUNGEE_DATA = "bungee.inter.data";
