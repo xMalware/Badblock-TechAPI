@@ -40,7 +40,8 @@ public class BadblockAPI extends JavaPlugin
 		try
 		{
 			PackageUtils.instanciateListeners(this,
-					"fr.badblock.api.bukkit.listeners.players"
+					"fr.badblock.api.bukkit.listeners.players",
+					"fr.badblock.api.bukkit.tech.receivers"
 			);
 		}
 		catch (IOException exception)

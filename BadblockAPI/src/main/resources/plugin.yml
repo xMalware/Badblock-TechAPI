@@ -1,0 +1,5 @@
+name: BadblockAPI
+authors: ['xMalware', 'LeLanN']
+version: 1.0
+description: :o
+main: fr.badblock.api.bukkit.BadblockAPI
