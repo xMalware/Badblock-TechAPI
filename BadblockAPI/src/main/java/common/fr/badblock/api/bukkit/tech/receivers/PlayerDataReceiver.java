@@ -35,6 +35,7 @@ public class PlayerDataReceiver extends RabbitListener
 		}
 		
 		String name = databaseObject.getString("name");
+		System.out.println("add");
 		objectsToSet.put(name, databaseObject);
 	}
 	

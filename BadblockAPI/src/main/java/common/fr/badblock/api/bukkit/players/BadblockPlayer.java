@@ -22,15 +22,17 @@ public class BadblockPlayer extends CraftPlayer
 		
 		new Thread("loader-" + getName())
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run()
 			{
-				while (true)
+				System.out.println("test");
+				for (int i = 0; i < 1000; i++)
 				{
 					Optional<Entry<String, BasicDBObject>> optional = PlayerDataReceiver.objectsToSet.entrySet().parallelStream().filter(entry ->
 					{
-						return entry.getValue().getString("name").equalsIgnoreCase(getName()) ||  
-								(entry.getValue().containsField("nickname") && entry.getValue().getString("nickname").equalsIgnoreCase(getName()));
+						return entry.getValue().getString("name").equalsIgnoreCase(BadblockPlayer.this.getName()) ||  
+								(entry.getValue().containsField("nickname") && entry.getValue().getString("nickname").equalsIgnoreCase(BadblockPlayer.this.getName()));
 					}).findFirst();
 					
 					if (optional.isPresent())
@@ -39,6 +41,13 @@ public class BadblockPlayer extends CraftPlayer
 						databaseObject = entry.getValue();
 						PlayerDataReceiver.objectsToSet.remove(entry.getKey());
 						System.out.println("set ok");
+						stop();
+					}
+					
+					try {
+						Thread.sleep(5);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
 			}
