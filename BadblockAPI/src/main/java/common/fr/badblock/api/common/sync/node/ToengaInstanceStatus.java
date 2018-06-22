@@ -16,5 +16,6 @@ public class ToengaInstanceStatus
 	public int				totalPlaces;
 	public int				placesPerGroup;
 	public int				priority;
+	public NodeState		nodeState;
 	
 }
