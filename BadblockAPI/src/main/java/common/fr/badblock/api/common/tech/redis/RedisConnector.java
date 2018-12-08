@@ -16,8 +16,6 @@ import lombok.Setter;
  * services to apply some useful things, like using the key/value storage
  * @author xMalware
  */
-@EqualsAndHashCode(callSuper = false)
-@Data
 public class RedisConnector extends Connector<RedisService>
 {
 

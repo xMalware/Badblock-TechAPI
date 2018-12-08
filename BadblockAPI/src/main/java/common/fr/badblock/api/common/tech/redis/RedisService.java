@@ -111,7 +111,7 @@ public class RedisService extends AutoReconnector
 		RedisConnector redisConnector = RedisConnector.getInstance();
 		if (indented)
 		{
-			return redisConnector.getExposeGson();
+			return redisConnector.getExposedGson();
 		}
 		return redisConnector.getGson();
 	}
