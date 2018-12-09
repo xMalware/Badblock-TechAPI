@@ -28,27 +28,20 @@ public class PermissionUser
 	//private static transient Type permissionType = new TypeToken<List<Permission>>() {}.getType();
 
 	private Map<String, Map<String, Long>>	groups;
-	private List<Permission>				permissions;
+	
 
 	public PermissionUser(JsonObject jsonObject)
 	{
 		groups = GsonUtils.getPrettyGson().fromJson(jsonObject.get("groups"), groupType);
-		if (jsonObject.get("permissions").isJsonNull())
-		{
-			permissions = new ArrayList<>();
-		}
-		else
-		{
-			//permissions = GsonUtils.getPrettyGson().fromJson(jsonObject.get("permissions").getAsJsonArray().toString(), permissionType);
-		}
 		if (groups == null)
 		{
 			groups = new HashMap<>();
 		}
-		if (permissions == null)
-		{
-			permissions = new ArrayList<>();
-		}
+	}
+	
+	public PermissionUser()
+	{
+		groups = new HashMap<>();
 	}
 
 	public List<String> getValidRanks(String place)
@@ -90,6 +83,49 @@ public class PermissionUser
 		}
 
 		return result;
+	}
+	
+	public List<PermissionSet> getPermissions(String place)
+	{
+		if (groups == null)
+		{
+			return new ArrayList<>();
+		}
+		
+		if (!groups.containsKey(place))
+		{
+			HashMap<String, Long> map = new HashMap<>();
+			map.put("default", -1L);
+			groups.put(place, map);
+			return getPermissions(place);
+		}
+		
+		List<String> g = getValidRanks(place);
+		
+		if (g == null)
+		{
+			return new ArrayList<>();
+		}
+		
+		List<PermissionSet> permissions = new ArrayList<>();
+		
+		for (String group : g)
+		{
+			Permissible permissible = PermissionsManager.getManager().getGroup(group);
+			if (permissible == null)
+			{
+				continue;
+			}
+
+			if (permissible.getPermissions() == null)
+			{
+				continue;
+			}
+			
+			permissions.addAll(permissible.getPermissions());
+		}
+		
+		return permissions;
 	}
 
 	public boolean hasPermission(String place, String permission)
@@ -133,7 +169,7 @@ public class PermissionUser
 		
 		return false;
 	}
-
+	
 	public DBObject getDBObject()
 	{
 		BasicDBObject dbObject = new BasicDBObject();

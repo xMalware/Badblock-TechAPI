@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import fr.badblock.api.common.utils.permissions.Permission.PermissionResult;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,10 @@ public class PermissionSet
 
 	public JsonElement getValue(String label)
 	{
+		if (!values.containsKey(label))
+		{
+			return new JsonObject();
+		}
 		return values.get(label);
 	}
 	

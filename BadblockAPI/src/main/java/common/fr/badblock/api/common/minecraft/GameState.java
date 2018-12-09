@@ -20,6 +20,15 @@ public enum GameState {
 		return null;
 	}
 
+	public static GameState getStatus(String name) {
+		for (final GameState status : values()) {
+			if (status.name().equalsIgnoreCase(name))
+				return status;
+		}
+
+		return null;
+	}
+
 	private final int id;
 
 	private GameState(int id) {

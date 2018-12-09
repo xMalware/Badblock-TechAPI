@@ -13,8 +13,8 @@ public abstract class Connector<T extends Service>
 {
 	
 	private GsonBuilder					gsonBuilder 	= new GsonBuilder();
-	private Gson						gson			= getGsonBuilder().create();
-	private Gson						exposedGson		= getGsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+	private Gson						gson			= new GsonBuilder().create();
+	private Gson						exposedGson		= new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	private ConcurrentMap<String, T>	services		= new ConcurrentHashMap<>();
 	
 	/**

@@ -1,5 +1,7 @@
 package fr.badblock.api.common.utils.permissions;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
@@ -34,6 +36,11 @@ public class PermissionsManager
 	{
 		this.currentPlace = place;
 		reloadGroups(groups);
+	}
+	
+	public Collection<Permissible> getGroups()
+	{
+		return groups.values();
 	}
 	
 	public void reloadGroups(Map<String, Permissible> groups)

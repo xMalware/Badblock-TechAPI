@@ -62,6 +62,11 @@ public class Permissible
 		displayable = jsonObject.get("displayable").getAsBoolean();
 		power = jsonObject.get("power").getAsInt();
 	}
+	
+	public List<PermissionSet> getPermissions()
+	{
+		return this.permissions;
+	}
 
 	public DBObject getDBObject()
 	{

@@ -1,12 +1,7 @@
 package fr.badblock.api.common.tech.redis;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import fr.badblock.api.common.tech.Connector;
 import fr.badblock.api.common.tech.redis.setting.RedisSettings;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,10 +16,6 @@ public class RedisConnector extends Connector<RedisService>
 
 	// RedisConnector singleton instance
 	@Getter@Setter private static 	RedisConnector 								instance		= new RedisConnector();
-
-	// Private fields
-	private							GsonBuilder									gsonBuilder		= new GsonBuilder();
-	private							Gson										exposeGson		= getGsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	
 	/**
 	 * Create settings and be back with a RedisSettings object who is useful for some operations, like using it in different services
