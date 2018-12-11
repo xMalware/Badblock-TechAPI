@@ -1,5 +1,6 @@
-package fr.badblock.api.common.minecraft.matchmaking;
+package fr.badblock.api.common.minecraft;
 
+import fr.badblock.api.common.sync.bungee.BadBungeeQueues;
 import fr.badblock.api.common.tech.rabbitmq.RabbitService;
 import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacket;
 import fr.badblock.api.common.tech.rabbitmq.packet.RabbitPacketEncoder;
@@ -11,13 +12,11 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MatchmakingEnterRequest
+public class BungeeRequest
 {
 
-	private String		playerName;
-	private String		cluster;
-	private String		worldSystem;
-	private long			timeSent;
+	private String		type;
+	private String		content;
 	
 	private String toJson()
 	{
@@ -26,10 +25,9 @@ public class MatchmakingEnterRequest
 	
 	public void send(RabbitService rabbitService)
 	{
-		this.timeSent = System.currentTimeMillis();
 		RabbitPacketMessage packetMessage = new RabbitPacketMessage(30000, toJson());
-		RabbitPacket packet = new RabbitPacket(packetMessage, MatchmakingQueues.ENTER_REQUEST + "." + cluster, 
-				false, RabbitPacketEncoder.UTF8, RabbitPacketType.MESSAGE_BROKER);
+		RabbitPacket packet = new RabbitPacket(packetMessage, BadBungeeQueues.BUNGEE_PROCESSING, 
+				false, RabbitPacketEncoder.UTF8, RabbitPacketType.PUBLISHER);
 		
 		rabbitService.sendPacket(packet);
 	}
