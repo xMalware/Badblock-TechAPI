@@ -17,6 +17,7 @@ public class MatchmakingEnterRequest
 	private String		playerName;
 	private String		cluster;
 	private String		worldSystem;
+	private String[]		extraPlayers;
 	private long			timeSent;
 	
 	private String toJson()
