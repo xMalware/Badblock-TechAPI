@@ -30,19 +30,26 @@ public class Punished
 
 	public Punished(JsonObject jsonObject)
 	{
-		if (jsonObject.has("ban") && !jsonObject.get("ban").isJsonNull())
+		try
 		{
-			ban = new Punishment(jsonObject.get("ban").getAsJsonObject());
+			if (jsonObject.has("ban") && !jsonObject.get("ban").isJsonNull())
+			{
+				ban = new Punishment(jsonObject.get("ban").getAsJsonObject());
+			}
+
+			if (jsonObject.has("mute") && !jsonObject.get("mute").isJsonNull())
+			{
+				mute = new Punishment(jsonObject.get("mute").getAsJsonObject());
+			}
+
+			if (jsonObject.has("warn") && !jsonObject.get("warn").isJsonNull())
+			{
+				warn = new Punishment(jsonObject.get("warn").getAsJsonObject());
+			}
 		}
-		
-		if (jsonObject.has("mute") && !jsonObject.get("mute").isJsonNull())
+		catch (Exception error)
 		{
-			mute = new Punishment(jsonObject.get("mute").getAsJsonObject());
-		}
-		
-		if (jsonObject.has("warn") && !jsonObject.get("warn").isJsonNull())
-		{
-			warn = new Punishment(jsonObject.get("warn").getAsJsonObject());
+
 		}
 	}
 
@@ -54,25 +61,25 @@ public class Punished
 		query.put("warn", warn != null ? warn.toObject() : null);
 		return query;
 	}
-	
+
 	public boolean isBan()
 	{
 		return ban != null && ban.getType().equals(PunishType.BAN) &&
 				(ban.getExpire() == -1 || ban.getExpire() > TimeUtils.time());
 	}
-	
+
 	public boolean isMute()
 	{
 		return mute != null && mute.getType().equals(PunishType.MUTE) && mute.getExpire() > TimeUtils.time();
 	}
-	
+
 	public String buildBanTime(Locale locale)
 	{
 		if(ban != null && ban.getExpire() != -1){
 			return Time.MILLIS_SECOND.toFrench(ban.getExpire() - TimeUtils.time(), Time.MINUTE, Time.YEAR);
 		} else return I18n.getInstance().get(locale, "punishments.forever")[0];
 	}
-	
+
 	public String buildMuteTime(Locale locale)
 	{
 		if(mute != null && mute.getExpire() != -1){
