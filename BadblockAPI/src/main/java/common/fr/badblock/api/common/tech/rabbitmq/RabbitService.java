@@ -73,9 +73,7 @@ public class RabbitService extends AutoReconnector
 	
 	public void sendSyncPacket(RabbitPacket rabbitPacket) throws Exception
 	{
-
-		RabbitService rabbitService = getPacketManager().getRabbitService();
-		Channel channel = rabbitService.getChannel();
+		Channel channel = getChannel();
 		if (rabbitPacket == null)
 		{
 			return;
@@ -132,7 +130,6 @@ public class RabbitService extends AutoReconnector
 		
 		message = null;
 		channel = null;
-		rabbitService = null;
 	}
 	
 	public void sendPacket(RabbitPacket rabbitPacket)
