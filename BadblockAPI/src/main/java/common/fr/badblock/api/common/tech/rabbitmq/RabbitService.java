@@ -1,11 +1,18 @@
 package fr.badblock.api.common.tech.rabbitmq;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
 
 import fr.badblock.api.common.tech.AutoReconnector;
 import fr.badblock.api.common.tech.rabbitmq.listener.RabbitListener;
@@ -55,6 +62,79 @@ public class RabbitService extends AutoReconnector
 		return this;
 	}
 
+	private void debugPacket(RabbitPacket rabbitPacket)
+	{
+		if (!rabbitPacket.isDebug())
+		{
+			return;	
+		}
+		Log.log(LogType.DEBUG, "[RabbitConnector] Packet sended to '" + rabbitPacket.getQueue() + "' : " + rabbitPacket.getRabbitPacketMessage().getMessage());
+	}
+	
+	public void sendSyncPacket(RabbitPacket rabbitPacket) throws Exception
+	{
+
+		RabbitService rabbitService = getPacketManager().getRabbitService();
+		Channel channel = rabbitService.getChannel();
+		if (rabbitPacket == null)
+		{
+			return;
+		}
+		if (rabbitPacket.getRabbitPacketMessage() == null)
+		{
+			return;
+		}
+		String message = rabbitPacket.getRabbitPacketMessage().toJson();
+		switch (rabbitPacket.getType())
+		{
+		case MESSAGE_BROKER:
+			channel.queueDeclare(rabbitPacket.getQueue(), false, false, false, null);
+			channel.basicPublish("", rabbitPacket.getQueue(), null, message.getBytes(rabbitPacket.getEncoder().getName()));
+			debugPacket(rabbitPacket);
+			break;
+		case PUBLISHER:
+			channel.exchangeDeclare(rabbitPacket.getQueue(), "fanout");
+			channel.basicPublish(rabbitPacket.getQueue(), "", null, message.getBytes(rabbitPacket.getEncoder().getName()));
+			debugPacket(rabbitPacket);
+			break;
+		case REMOTE_PROCEDURE_CALL:
+			if (rabbitPacket.getCallback() == null)
+			{
+				break;
+			}
+			String replyQueueName = channel.queueDeclare().getQueue();
+			final String corrId = UUID.randomUUID().toString();
+			AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
+					.correlationId(corrId)
+					.replyTo(replyQueueName)
+					.build();
+			channel.basicPublish("", rabbitPacket.getQueue(), properties, message.getBytes(rabbitPacket.getEncoder().getName()));
+
+			final BlockingQueue<String> response = new ArrayBlockingQueue<String>(1);
+
+			System.out.println("O");
+			channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
+				@Override
+				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+					System.out.println("Response: " + properties.getCorrelationId() + " / " + corrId);
+					if (properties.getCorrelationId().equals(corrId)) {
+						response.offer(new String(body, "UTF-8"));
+					}
+				}
+			});
+			System.out.println("K!");
+			rabbitPacket.getCallback().done(response.take(), null);
+			System.out.println("!! :P");
+
+			debugPacket(rabbitPacket);
+			break;
+		}
+		
+		message = null;
+		channel = null;
+		rabbitService = null;
+	}
+	
 	public void sendPacket(RabbitPacket rabbitPacket)
 	{
 		getPacketManager().sendPacket(rabbitPacket);

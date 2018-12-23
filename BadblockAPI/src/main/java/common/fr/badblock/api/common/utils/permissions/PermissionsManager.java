@@ -1,7 +1,6 @@
 package fr.badblock.api.common.utils.permissions;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
