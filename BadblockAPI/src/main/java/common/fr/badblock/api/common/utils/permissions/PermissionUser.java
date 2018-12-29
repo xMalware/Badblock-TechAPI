@@ -137,6 +137,24 @@ public class PermissionUser
 			permissions.addAll(permissible.getPermissions());
 		}
 		
+		if (this.permissions.containsKey(place))
+		{
+			Map<String, Long> perms = this.permissions.get(place);
+			List<Permission> permObjects = new ArrayList<>();
+			for (Entry<String, Long> entry : perms.entrySet())
+			{
+				if (entry.getValue() > 0 && entry.getValue() < System.currentTimeMillis())
+				{
+					continue;
+				}
+				
+				permObjects.add(new Permission(entry.getKey()));
+			}
+			
+			PermissionSet set = new PermissionSet(Arrays.asList(place), permObjects, new HashMap<>(), new HashMap<>());
+			permissions.add(set);
+		}
+		
 		return permissions;
 	}
 
