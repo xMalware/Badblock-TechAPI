@@ -170,7 +170,7 @@ public class Permissible
 			{
 				continue;
 			}
-			
+
 			currentResult = set.hasPermission(perm);
 			
 			if (currentResult.equals(PermissionResult.NO))
@@ -190,6 +190,7 @@ public class Permissible
 
 		for (Permissible permissible : getInheritances())
 		{
+			
 			currentResult = permissible.testPermission(perm);
 
 			if (currentResult == PermissionResult.NO)

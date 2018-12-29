@@ -35,7 +35,7 @@ public class Permission
 		if(last == '*')
 		{
 			isAll = true;
-			permission = permission.substring(0, permission.length() - ( permission.length() == 1 ? 1 : 2 ));
+			permission = permission.substring(0, permission.length() - 1);
 		}
 
 		this.permission = permission.toLowerCase();
@@ -48,9 +48,15 @@ public class Permission
 		if (getResult() == null && getPermission() != null)
 		{
 			load(getPermission());
+			perm1 = getPermission();
 		}
 		
-		if(perm1.equals(perm2) || permission.getPermission().equals("*") || ( isAll && perm2.startsWith(perm1) ))
+		if (perm1 == null || permission == null || perm2 == null)
+		{
+			return PermissionResult.UNKNOWN;
+		}
+		
+		if (perm1.equals(perm2) || permission.getPermission().equals("*") || ( isAll && perm2.startsWith(perm1) ))
 		{
 			return getResult();
 		}

@@ -10,6 +10,6 @@ public class ServerObject
 
 	private	String	name;
 	private	String	ip;
-	private int		port;
+	private int			port;
 	
 }

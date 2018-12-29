@@ -8,12 +8,14 @@ import com.google.gson.JsonObject;
 
 import fr.badblock.api.common.utils.permissions.Permission.PermissionResult;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * Represent a set of permission, power and value. A set is linked to a place list. Places can be minigames, faction, ...
  * @author LeLanN
  */
 @AllArgsConstructor
+@Data
 public class PermissionSet
 {
 	private List<String> places;

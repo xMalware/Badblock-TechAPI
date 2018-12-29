@@ -127,9 +127,6 @@ public class RabbitService extends AutoReconnector
 			debugPacket(rabbitPacket);
 			break;
 		}
-		
-		message = null;
-		channel = null;
 	}
 	
 	public void sendPacket(RabbitPacket rabbitPacket)

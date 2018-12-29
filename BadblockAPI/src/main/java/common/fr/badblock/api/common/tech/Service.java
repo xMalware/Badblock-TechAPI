@@ -17,6 +17,7 @@ public abstract class Service extends Logger
 	{
 		setName(name);
 		setSettings(settings);
+		System.out.println("Registered Service: " + name);
 	}
 	
 	public abstract void remove();

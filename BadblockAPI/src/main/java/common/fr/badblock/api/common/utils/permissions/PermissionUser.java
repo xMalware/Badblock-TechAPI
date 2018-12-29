@@ -2,9 +2,11 @@ package fr.badblock.api.common.utils.permissions;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import com.google.common.reflect.TypeToken;
@@ -24,10 +26,9 @@ public class PermissionUser
 
 	@SuppressWarnings("serial")
 	private static transient Type groupType = new TypeToken<Map<String, Map<String, Long>>>() {}.getType();
-	//@SuppressWarnings("serial")
-	//private static transient Type permissionType = new TypeToken<List<Permission>>() {}.getType();
 
 	private Map<String, Map<String, Long>>	groups;
+	private Map<String, Map<String, Long>> permissions;
 	
 
 	public PermissionUser(JsonObject jsonObject)
@@ -36,6 +37,12 @@ public class PermissionUser
 		if (groups == null)
 		{
 			groups = new HashMap<>();
+		}
+		
+		permissions = GsonUtils.getPrettyGson().fromJson(jsonObject.get("permissions"), groupType);
+		if (permissions == null)
+		{
+			permissions = new HashMap<>();
 		}
 	}
 	
@@ -48,9 +55,14 @@ public class PermissionUser
 	{
 		if (!groups.containsKey(place))
 		{
-			return null;
+			return Arrays.asList("default");
 		}
-		return groups.get(place).entrySet().stream().filter(entry -> entry.getValue() > System.currentTimeMillis() || entry.getValue() <= 0).map(d -> d.getKey()).collect(Collectors.toList());
+		List<String> s = groups.get(place).entrySet().stream().filter(entry -> entry.getValue() > System.currentTimeMillis() || entry.getValue() <= 0).map(d -> d.getKey()).collect(Collectors.toList());
+		if (s.isEmpty())
+		{
+			return Arrays.asList("default");
+		}
+		return s;
 	}
 
 	public Permissible getHighestRank(String place, boolean onlyDisplayables)
@@ -140,7 +152,7 @@ public class PermissionUser
 			HashMap<String, Long> map = new HashMap<>();
 			map.put("default", -1L);
 			groups.put(place, map);
-			return false;
+			return hasPermission(place, permission);
 		}
 		
 		List<String> g = getValidRanks(place);
@@ -151,6 +163,7 @@ public class PermissionUser
 		}
 		
 		PermissionResult permissionResult = null;
+		Permission permissionObject = new Permission(permission);
 		
 		for (String group : g)
 		{
@@ -160,10 +173,28 @@ public class PermissionUser
 				continue;
 			}
 
-			permissionResult = permissible.testPermission(new Permission(permission));
+			permissionResult = permissible.testPermission(permissionObject);
 			if (permissionResult.equals(PermissionResult.YES))
 			{
 				return true;
+			}
+		}
+		
+		if (permissions.containsKey(place))
+		{
+			Map<String, Long> perms = permissions.get(place);
+			for (Entry<String, Long> entry : perms.entrySet())
+			{
+				if (entry.getValue() > 0 && entry.getValue() < System.currentTimeMillis())
+				{
+					continue;
+				}
+				
+				permissionResult = new Permission(entry.getKey()).compare(permissionObject);
+				if (permissionResult.equals(PermissionResult.YES))
+				{
+					return true;
+				}
 			}
 		}
 		
@@ -174,7 +205,7 @@ public class PermissionUser
 	{
 		BasicDBObject dbObject = new BasicDBObject();
 		dbObject.put("groups", groups);
-		dbObject.put("permissions", groups);
+		dbObject.put("permissions", permissions);
 		return dbObject;
 	}
 
