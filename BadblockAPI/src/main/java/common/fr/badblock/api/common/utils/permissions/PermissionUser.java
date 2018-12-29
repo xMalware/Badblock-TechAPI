@@ -68,9 +68,9 @@ public class PermissionUser
 	public Permissible getHighestRank(String place, boolean onlyDisplayables)
 	{
 		List<String> g = getValidRanks(place);
-		if (g == null)
+		if (g == null || g.isEmpty())
 		{
-			return null;
+			return PermissionsManager.getManager().getGroup("default");
 		}
 
 		Permissible result = null;
@@ -94,6 +94,11 @@ public class PermissionUser
 			}
 		}
 
+		if (result == null)
+		{
+			return PermissionsManager.getManager().getGroup("default");
+		}
+		
 		return result;
 	}
 	
