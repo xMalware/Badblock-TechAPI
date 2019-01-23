@@ -18,6 +18,9 @@ public enum BungeePacketType {
 	 */
 	BROADCAST(),
 	
+	/** Broadcast components packet **/
+	BROADCAST_COMPONENT(),
+	
 	/**
 	 * Logging packet
 	 */
@@ -37,11 +40,16 @@ public enum BungeePacketType {
 	 * Force kick
 	 */
 	FORCE_KICK(),
-	
+
 	/**
 	 * Server broadcast
 	 */
-	SERVER_BROADCAST();
+	SERVER_BROADCAST(),
+	
+	/**
+	 * Permission broadcast
+	 */
+	PERMISSION_BROADCAST();
 
 	/**
 	 * Custom packet processing

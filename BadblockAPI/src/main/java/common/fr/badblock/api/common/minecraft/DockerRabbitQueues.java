@@ -10,6 +10,7 @@ public enum DockerRabbitQueues
 	INSTANCE_KEEPALIVE("docker.instance.keepalive"),
 	INSTANCE_STOP("docker.instance.stop"),
 	INSTANCE_OPEN("docker.instance.open"),
+	INSTANCE_CLOSE("docker.instance.close"),
 	
 	LOG("docker.log");
 	
