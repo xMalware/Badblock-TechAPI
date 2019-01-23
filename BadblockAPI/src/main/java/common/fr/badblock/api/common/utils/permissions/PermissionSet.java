@@ -1,5 +1,6 @@
 package fr.badblock.api.common.utils.permissions;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,21 +26,39 @@ public class PermissionSet
 
 	public int getPower(String label)
 	{
+		if (powers == null)
+		{
+			powers = new HashMap<>();
+		}
 		return powers.containsKey(label) ? (int) powers.get(label) : 0;
 	}
 
 	public JsonElement getValue(String label)
 	{
+		if (values == null)
+		{
+			values = new HashMap<>();
+		}
 		if (!values.containsKey(label))
 		{
 			return new JsonObject();
 		}
 		return values.get(label);
 	}
-	
+
 	public PermissionResult hasPermission(Permission permission)
 	{
 		PermissionResult result = null;
+
+		if (permission == null)
+		{
+			return PermissionResult.UNKNOWN;
+		}
+
+		if (permissions == null)
+		{
+			return PermissionResult.UNKNOWN;
+		}
 
 		for (Permission perm : this.permissions)
 		{
@@ -50,15 +69,15 @@ public class PermissionSet
 				return result;
 			}
 		}
-		
+
 		return PermissionResult.UNKNOWN;
 	}
-	
+
 	public boolean isCompatible(String place)
 	{
 		return places.contains(place) || places.contains("*");
 	}
-	
+
 	public boolean isCompatible()
 	{
 		return isCompatible( PermissionsManager.getManager().getCurrentPlace() );

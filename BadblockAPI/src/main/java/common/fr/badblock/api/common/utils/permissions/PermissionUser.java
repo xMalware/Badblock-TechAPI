@@ -29,7 +29,7 @@ public class PermissionUser
 
 	private Map<String, Map<String, Long>>	groups;
 	private Map<String, Map<String, Long>> permissions;
-	
+
 
 	public PermissionUser(JsonObject jsonObject)
 	{
@@ -38,14 +38,14 @@ public class PermissionUser
 		{
 			groups = new HashMap<>();
 		}
-		
+
 		permissions = GsonUtils.getPrettyGson().fromJson(jsonObject.get("permissions"), groupType);
 		if (permissions == null)
 		{
 			permissions = new HashMap<>();
 		}
 	}
-	
+
 	public PermissionUser()
 	{
 		groups = new HashMap<>();
@@ -77,17 +77,17 @@ public class PermissionUser
 		for (String group : g)
 		{
 			Permissible permissible = PermissionsManager.getManager().getGroup(group);
-			
+
 			if (permissible == null)
 			{
 				continue;
 			}
-			
+
 			if (onlyDisplayables && !permissible.isDisplayable())
 			{
 				continue;
 			}
-			
+
 			if (result == null || permissible.getPower() > result.getPower())
 			{
 				result = permissible;
@@ -98,17 +98,17 @@ public class PermissionUser
 		{
 			return PermissionsManager.getManager().getGroup("default");
 		}
-		
+
 		return result;
 	}
-	
+
 	public List<PermissionSet> getPermissions(String place)
 	{
 		if (groups == null)
 		{
 			return new ArrayList<>();
 		}
-		
+
 		if (!groups.containsKey(place))
 		{
 			HashMap<String, Long> map = new HashMap<>();
@@ -116,16 +116,16 @@ public class PermissionUser
 			groups.put(place, map);
 			return getPermissions(place);
 		}
-		
+
 		List<String> g = getValidRanks(place);
-		
+
 		if (g == null)
 		{
 			return new ArrayList<>();
 		}
-		
+
 		List<PermissionSet> permissions = new ArrayList<>();
-		
+
 		for (String group : g)
 		{
 			Permissible permissible = PermissionsManager.getManager().getGroup(group);
@@ -138,11 +138,11 @@ public class PermissionUser
 			{
 				continue;
 			}
-			
+
 			permissions.addAll(permissible.getPermissions());
 		}
-		
-		if (this.permissions.containsKey(place))
+
+		if (this.permissions  != null && this.permissions.containsKey(place))
 		{
 			Map<String, Long> perms = this.permissions.get(place);
 			List<Permission> permObjects = new ArrayList<>();
@@ -152,14 +152,14 @@ public class PermissionUser
 				{
 					continue;
 				}
-				
+
 				permObjects.add(new Permission(entry.getKey()));
 			}
-			
+
 			PermissionSet set = new PermissionSet(Arrays.asList(place), permObjects, new HashMap<>(), new HashMap<>());
 			permissions.add(set);
 		}
-		
+
 		return permissions;
 	}
 
@@ -169,7 +169,7 @@ public class PermissionUser
 		{
 			return false;
 		}
-		
+
 		if (!groups.containsKey(place))
 		{
 			HashMap<String, Long> map = new HashMap<>();
@@ -177,17 +177,17 @@ public class PermissionUser
 			groups.put(place, map);
 			return hasPermission(place, permission);
 		}
-		
+
 		List<String> g = getValidRanks(place);
-		
+
 		if (g == null)
 		{
 			return false;
 		}
-		
+
 		PermissionResult permissionResult = null;
 		Permission permissionObject = new Permission(permission);
-		
+
 		for (String group : g)
 		{
 			Permissible permissible = PermissionsManager.getManager().getGroup(group);
@@ -202,28 +202,31 @@ public class PermissionUser
 				return true;
 			}
 		}
-		
-		if (permissions.containsKey(place))
+
+		if (permissions != null)
 		{
-			Map<String, Long> perms = permissions.get(place);
-			for (Entry<String, Long> entry : perms.entrySet())
+			if (permissions.containsKey(place))
 			{
-				if (entry.getValue() > 0 && entry.getValue() < System.currentTimeMillis())
+				Map<String, Long> perms = permissions.get(place);
+				for (Entry<String, Long> entry : perms.entrySet())
 				{
-					continue;
-				}
-				
-				permissionResult = new Permission(entry.getKey()).compare(permissionObject);
-				if (permissionResult.equals(PermissionResult.YES))
-				{
-					return true;
+					if (entry.getValue() > 0 && entry.getValue() < System.currentTimeMillis())
+					{
+						continue;
+					}
+
+					permissionResult = new Permission(entry.getKey()).compare(permissionObject);
+					if (permissionResult.equals(PermissionResult.YES))
+					{
+						return true;
+					}
 				}
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public DBObject getDBObject()
 	{
 		BasicDBObject dbObject = new BasicDBObject();
