@@ -12,7 +12,7 @@
 		</repository>
 		<repository>
 			<id>guiria</id>
-			<url>https://guiria.badblock.fr/maven/raw/master/</url>
+			<url>https://cdn.badblock.fr/maven/raw/master/</url>
 		</repository>
 	</repositories>
 	<build>

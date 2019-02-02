@@ -11,6 +11,7 @@ public enum DockerRabbitQueues
 	INSTANCE_STOP("docker.instance.stop"),
 	INSTANCE_OPEN("docker.instance.open"),
 	INSTANCE_CLOSE("docker.instance.close"),
+	INSTANCE_PARTY_DATA("docker.instance.party_data"),
 	
 	LOG("docker.log");
 	

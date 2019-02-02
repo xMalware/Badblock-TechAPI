@@ -55,8 +55,12 @@ public class Punishment {
 				proof[i] = jsonObject.get("proof").getAsJsonArray().get(i).getAsString();
 			}
 		}
+		
 		punisher = jsonObject.get("punisher").getAsString();
-		punisherUuid = jsonObject.get("punisherUuid").getAsString();
+		if (!jsonObject.get("punisherUuid").isJsonNull())
+		{
+			punisherUuid = jsonObject.get("punisherUuid").getAsString();
+		}
 		punisherIp = jsonObject.get("punisherIp").getAsString();
 	}
 
