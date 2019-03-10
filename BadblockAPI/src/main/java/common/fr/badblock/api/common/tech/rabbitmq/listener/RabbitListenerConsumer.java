@@ -39,15 +39,12 @@ public class RabbitListenerConsumer extends DefaultConsumer
 		try
 		{
 			RabbitPacketMessage rabbitMessage = RabbitPacketMessage.fromJson(message);
+			Log.log(LogType.DEBUG, "[RabbitConnector] Received packet from " + getRabbitListener().getName() + ": " + rabbitMessage.getMessage());
 			if (rabbitMessage.isAlive()) 
 			{
-				if (getRabbitListener().isDebug()) 
-				{
-					Log.log(LogType.DEBUG, "[RabbitConnector] Received packet from " + getRabbitListener().getName() + ": " + rabbitMessage.getMessage());
-				}
 				getRabbitListener().onPacketReceiving(rabbitMessage.getMessage());
 			}
-			else if (getRabbitListener().isDebug())
+			else
 			{
 				Log.log(LogType.ERROR, "[RabbitConnector] Error during a received packet from " + getRabbitListener().getName() + ": EXPIRED!");
 				Log.log(LogType.ERROR, "[RabbitConnector] " + rabbitMessage.getMessage());

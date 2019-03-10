@@ -41,9 +41,6 @@ public abstract class RabbitRequestListener
 					{
 						return;
 					}
-					System.out.println("Request listener : A");
-
-					System.out.println("Request listener : B");
 					channel = getRabbitService().getConnection().createChannel();
 
 					final Channel finalChannel = channel;
@@ -52,11 +49,9 @@ public abstract class RabbitRequestListener
 
 					channel.basicQos(1);
 
-					System.out.println("Request listener : C");
 					Consumer consumer = new DefaultConsumer(channel) {
 						@Override
 						public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-							System.out.println("Request listener : D - HANDLE DELIVERY");
 							AMQP.BasicProperties replyProps = new AMQP.BasicProperties
 									.Builder()
 									.correlationId(properties.getCorrelationId())

@@ -3,11 +3,9 @@ package fr.badblock.api.common.tech;
 import java.util.TimerTask;
 
 import fr.badblock.api.common.utils.threading.TimerUtils;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@EqualsAndHashCode(callSuper = false)
 @Getter
 @Setter
 public abstract class AutoReconnector extends Service

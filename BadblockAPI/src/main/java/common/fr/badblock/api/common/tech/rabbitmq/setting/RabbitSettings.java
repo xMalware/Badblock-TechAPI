@@ -21,7 +21,7 @@ public class RabbitSettings extends Settings
 	private boolean		automaticRecovery;
 	private int			connectionTimeout;
 	private int			requestedHeartbeat;
-	private int			workerThreads			= 32;
+	private int			workerThreads			= 4;
 
 	public ConnectionFactory toFactory() 
 	{

@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 import fr.badblock.api.common.tech.rabbitmq.RabbitService;
 import fr.badblock.api.common.tech.rabbitmq.threading.RabbitThread;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@EqualsAndHashCode(callSuper = false)
-@Data
+@Getter
+@Setter
 public class RabbitPacketManager 
 {
 
