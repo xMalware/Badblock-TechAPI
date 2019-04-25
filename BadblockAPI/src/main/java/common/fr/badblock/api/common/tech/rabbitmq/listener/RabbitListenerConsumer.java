@@ -32,14 +32,21 @@ public class RabbitListenerConsumer extends DefaultConsumer
 	public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException
 	{
 		String message = new String(body, "UTF-8");
+
 		if (getRabbitListener().getRabbitService().isDead()) 
 		{
 			return;
 		}
+
 		try
 		{
 			RabbitPacketMessage rabbitMessage = RabbitPacketMessage.fromJson(message);
-			Log.log(LogType.DEBUG, "[RabbitConnector] Received packet from " + getRabbitListener().getName() + ": " + rabbitMessage.getMessage());
+
+			if (getRabbitListener().isDebug())
+			{
+				Log.log(LogType.DEBUG, "[RabbitConnector] Received packet from " + getRabbitListener().getName() + ": " + rabbitMessage.getMessage());
+			}
+
 			if (rabbitMessage.isAlive()) 
 			{
 				getRabbitListener().onPacketReceiving(rabbitMessage.getMessage());
@@ -49,6 +56,7 @@ public class RabbitListenerConsumer extends DefaultConsumer
 				Log.log(LogType.ERROR, "[RabbitConnector] Error during a received packet from " + getRabbitListener().getName() + ": EXPIRED!");
 				Log.log(LogType.ERROR, "[RabbitConnector] " + rabbitMessage.getMessage());
 			}
+
 		}
 		catch(Exception error)
 		{

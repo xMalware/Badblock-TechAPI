@@ -32,6 +32,9 @@ public class Permissible
 
 	private String				name;
 	private boolean				displayable;
+
+	private String				prefix;
+	private String				suffix;
 	private int					power;
 	private List<String>		inheritances;
 	private List<PermissionSet>	permissions;

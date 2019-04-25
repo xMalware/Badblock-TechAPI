@@ -19,6 +19,8 @@ import lombok.Data;
 @Data
 public class PermissionSet
 {
+	
+	
 	private List<String> places;
 	private List<Permission> permissions;
 	private Map<String, Integer> powers;
