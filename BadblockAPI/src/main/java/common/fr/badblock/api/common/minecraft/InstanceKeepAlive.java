@@ -10,15 +10,18 @@ import lombok.Setter;
 	private GameState		gameState;
 	private int					players;
 	private int					slots;
+	private int				port;
 	private long				keepAliveTime;
 
-	public InstanceKeepAlive(String name, boolean isJoinable, GameState gameState, int players, int slots)
+	public InstanceKeepAlive(String name, boolean isJoinable, GameState gameState, int players, int slots, int port)
 	{
 		this.setName(name);
 		this.setJoinable(isJoinable);
 		this.setGameState(gameState);
 		this.setPlayers(players);
 		this.setSlots(slots);
+		this.setKeepAliveTime(System.currentTimeMillis());
+		this.setPort(port);
 	}
 	
 	public void keepAlive()

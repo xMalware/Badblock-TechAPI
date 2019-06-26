@@ -31,7 +31,7 @@ public class Permissible
 	Type permissionList = new TypeToken<List<PermissionSet>>() {}.getType();
 
 	private String				name;
-	private boolean				displayable;
+	private boolean			displayable;
 
 	private String				prefix;
 	private String				suffix;
@@ -39,9 +39,11 @@ public class Permissible
 	private List<String>		inheritances;
 	private List<PermissionSet>	permissions;
 
-	public Permissible(String name, List<String> inheritances, List<PermissionSet> permissions, boolean displayable, int power)
+	public Permissible(String name, String prefix, String suffix, List<String> inheritances, List<PermissionSet> permissions, boolean displayable, int power)
 	{
 		this.name = name;
+		this.prefix = prefix;
+		this.suffix = suffix;
 		this.inheritances = inheritances;
 		this.permissions = permissions;
 		this.displayable = displayable;
@@ -51,6 +53,8 @@ public class Permissible
 	public Permissible()
 	{
 		this.name = "default";
+		this.prefix = "prefix";
+		this.suffix = "suffix";
 		this.inheritances = new ArrayList<>();
 		this.permissions = new ArrayList<>();
 		this.displayable = true;
@@ -60,6 +64,8 @@ public class Permissible
 	public Permissible(JsonObject jsonObject)
 	{
 		name = jsonObject.get("name").getAsString();
+		prefix = jsonObject.get("prefix").getAsString();
+		suffix = jsonObject.get("suffix").getAsString();
 		inheritances = GsonUtils.getPrettyGson().fromJson(jsonObject.get("inheritances"), inheritanceList);
 		permissions = GsonUtils.getPrettyGson().fromJson(jsonObject.get("permissions"), permissionList);
 		displayable = jsonObject.get("displayable").getAsBoolean();
@@ -81,10 +87,20 @@ public class Permissible
 		query.put("power", power);
 		return query;
 	}
-	
+
 	public String getName()
 	{
 		return name;
+	}
+
+	public String getPrefix()
+	{
+		return prefix;
+	}
+
+	public String getSuffix()
+	{
+		return suffix;
 	}
 	
 	public boolean isDisplayable()
@@ -115,16 +131,6 @@ public class Permissible
 	public String[] getTranslatedData(Locale locale, String data)
 	{
 		return I18n.getInstance().get(locale, getRawData(data));
-	}
-	
-	public String getPrefix(Locale locale, String type)
-	{
-		return getTranslatedData(locale, "prefix_" + type)[0];
-	}
-	
-	public String getSuffix(Locale locale, String type)
-	{
-		return getTranslatedData(locale, "suffix_" + type)[0];
 	}
 
 	/**

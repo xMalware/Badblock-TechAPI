@@ -45,7 +45,7 @@ public class PermissibleExample
 		
 		permissionSet.add(new PermissionSet(places2, permissionss3, powers3, values3));
 		
-		Permissible permissible = new Permissible("admin", inheritances, permissionSet, true, 75);
+		Permissible permissible = new Permissible("admin", "Admin", "", inheritances, permissionSet, true, 75);
 		
 		permissions.put("admin", permissible);
 		PermissionsManager manager = new PermissionsManager(permissions, place);
